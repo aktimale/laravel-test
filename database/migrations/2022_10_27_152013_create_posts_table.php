@@ -15,16 +15,19 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->char('pagetitle', 255);
-            $table->char('longtitle', 255);
+            $table->char('title', 255);
             $table->char('description', 255);
-            $table->char('introtext', 255);
+            $table->char('intro_text', 255);
             $table->text('content');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->boolean('published')->default(0);
-            $table->integer('publishedon');
-            $table->integer('publishedby');
+            $table->integer('published_on')->nullable();
+            $table->integer('pub_date')->nullable();
+            $table->integer('unpub_date')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes();  
+            $table->index('category_id', 'post_category_idx');
+            $table->foreign('category_id', 'post_category_fk')->on('categories')->references('id');
         });
     }
 
